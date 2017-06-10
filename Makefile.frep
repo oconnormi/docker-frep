@@ -1,0 +1,22 @@
+REPO:=github.com/subchen/frep
+NAME:=frep
+VERSION:=$(shell cat VERSION)
+GOPATH:=/go
+GOX:=CGO_ENABLED=0 gox
+GOX_OUTPUT:=-output "/build/frep_{{.OS}}_{{.Arch}}"
+GOX_ARCH:=-osarch="linux/amd64"
+
+LDFLAGS:=-s -w \
+	-X 'main.BuildVersion=${VERSION}' \
+	-X 'main.BuildGitRev=$(shell git rev-list HEAD --count)' \
+	-X 'main.BuildGitCommit=$(shell git describe --abbrev=0 --always)' \
+	-X 'main.BuildDate=$(shell date -u -R)'
+GOX_LDFLAGS:=-ldflags "${LDFLAGS}"
+
+default: build
+
+build:
+	echo "==> Building ${NAME}"
+	${GOX} ${GOX_ARCH} ${GOX_LDFLAGS} ${GOX_OUTPUT} ${REPO}
+
+.PHONY: build
