@@ -2,7 +2,7 @@
 
 Builds a statically-linked version of [frep](https://github.com/subchen/frep) and creates a docker image
 
-#Usage
+# Usage
 
 ```bash
 docker run --rm oconnormi/frep
